@@ -25,7 +25,7 @@ func (g *GormManager[T]) SessionContext(ctx context.Context, opts ...Option) *go
 }
 
 func (g *GormManager[T]) First(opts ...Option) (*T, error) {
-	return g.FirstContext(context.Background())
+	return g.FirstContext(context.Background(), opts...)
 }
 
 func (g *GormManager[T]) FirstContext(ctx context.Context, opts ...Option) (*T, error) {
