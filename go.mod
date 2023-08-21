@@ -1,4 +1,4 @@
-module github.com/riete/gm
+module github.com/riete/gorm-manager
 
 go 1.21.0
 

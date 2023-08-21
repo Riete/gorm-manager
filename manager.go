@@ -1,4 +1,4 @@
-package gm
+package manger
 
 import (
 	"context"
