@@ -138,7 +138,8 @@ func (g *GormManager[T]) Scan(dst any, opts ...Option) error {
 }
 
 func (g *GormManager[T]) ScanContext(ctx context.Context, dst any, opts ...Option) error {
-	return g.SessionContext(ctx, opts...).Scan(dst).Error
+	model := new(T)
+	return g.SessionContext(ctx, opts...).Model(model).Scan(dst).Error
 }
 
 func (g *GormManager[T]) Rows(opts ...Option) (*sql.Rows, error) {
@@ -157,52 +158,52 @@ func (g *GormManager[T]) ExecContext(ctx context.Context, sql string, args ...an
 	return g.SessionContext(ctx).Exec(sql, args...).Error
 }
 
-func (g *GormManager[T]) AssociationFind(column string, dst any, opts ...Option) error {
-	return g.AssociationFindContext(context.Background(), column, dst, opts...)
+func (g *GormManager[T]) AssociationFind(model *T, column string, dst any, opts ...Option) error {
+	return g.AssociationFindContext(context.Background(), model, column, dst, opts...)
 }
 
-func (g *GormManager[T]) AssociationFindContext(ctx context.Context, column string, dst any, opts ...Option) error {
-	return g.SessionContext(ctx, opts...).Association(column).Find(dst)
+func (g *GormManager[T]) AssociationFindContext(ctx context.Context, model *T, column string, dst any, opts ...Option) error {
+	return g.SessionContext(ctx, opts...).Model(model).Association(column).Find(dst)
 }
 
-func (g *GormManager[T]) AssociationAppend(column string, dst []any, opts ...Option) error {
-	return g.AssociationAppendContext(context.Background(), column, dst, opts...)
+func (g *GormManager[T]) AssociationAppend(model *T, column string, dst []any, opts ...Option) error {
+	return g.AssociationAppendContext(context.Background(), model, column, dst, opts...)
 }
 
-func (g *GormManager[T]) AssociationAppendContext(ctx context.Context, column string, dst []any, opts ...Option) error {
-	return g.SessionContext(ctx, opts...).Association(column).Append(dst...)
+func (g *GormManager[T]) AssociationAppendContext(ctx context.Context, model *T, column string, dst []any, opts ...Option) error {
+	return g.SessionContext(ctx, opts...).Model(model).Association(column).Append(dst...)
 }
 
-func (g *GormManager[T]) AssociationReplace(column string, dst []any, opts ...Option) error {
-	return g.AssociationReplaceContext(context.Background(), column, dst, opts...)
+func (g *GormManager[T]) AssociationReplace(model *T, column string, dst []any, opts ...Option) error {
+	return g.AssociationReplaceContext(context.Background(), model, column, dst, opts...)
 }
 
-func (g *GormManager[T]) AssociationReplaceContext(ctx context.Context, column string, dst []any, opts ...Option) error {
-	return g.SessionContext(ctx, opts...).Association(column).Replace(dst...)
+func (g *GormManager[T]) AssociationReplaceContext(ctx context.Context, model *T, column string, dst []any, opts ...Option) error {
+	return g.SessionContext(ctx, opts...).Model(model).Association(column).Replace(dst...)
 }
 
-func (g *GormManager[T]) AssociationDelete(column string, dst []any, opts ...Option) error {
-	return g.AssociationDeleteContext(context.Background(), column, dst, opts...)
+func (g *GormManager[T]) AssociationDelete(model *T, column string, dst []any, opts ...Option) error {
+	return g.AssociationDeleteContext(context.Background(), model, column, dst, opts...)
 }
 
-func (g *GormManager[T]) AssociationDeleteContext(ctx context.Context, column string, dst []any, opts ...Option) error {
-	return g.SessionContext(ctx, opts...).Association(column).Delete(dst...)
+func (g *GormManager[T]) AssociationDeleteContext(ctx context.Context, model *T, column string, dst []any, opts ...Option) error {
+	return g.SessionContext(ctx, opts...).Model(model).Association(column).Delete(dst...)
 }
 
-func (g *GormManager[T]) AssociationClear(column string, opts ...Option) error {
-	return g.AssociationClearContext(context.Background(), column, opts...)
+func (g *GormManager[T]) AssociationClear(model *T, column string, opts ...Option) error {
+	return g.AssociationClearContext(context.Background(), model, column, opts...)
 }
 
-func (g *GormManager[T]) AssociationClearContext(ctx context.Context, column string, opts ...Option) error {
-	return g.SessionContext(ctx, opts...).Association(column).Clear()
+func (g *GormManager[T]) AssociationClearContext(ctx context.Context, model *T, column string, opts ...Option) error {
+	return g.SessionContext(ctx, opts...).Model(model).Association(column).Clear()
 }
 
-func (g *GormManager[T]) AssociationCount(column string, opts ...Option) int64 {
-	return g.AssociationCountContext(context.Background(), column, opts...)
+func (g *GormManager[T]) AssociationCount(model *T, column string, opts ...Option) int64 {
+	return g.AssociationCountContext(context.Background(), model, column, opts...)
 }
 
-func (g *GormManager[T]) AssociationCountContext(ctx context.Context, column string, opts ...Option) int64 {
-	return g.SessionContext(ctx, opts...).Association(column).Count()
+func (g *GormManager[T]) AssociationCountContext(ctx context.Context, model *T, column string, opts ...Option) int64 {
+	return g.SessionContext(ctx, opts...).Model(model).Association(column).Count()
 }
 
 func NewGormManager[T any](m *T, db *gorm.DB) GormManager[T] {
