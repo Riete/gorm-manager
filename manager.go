@@ -206,6 +206,15 @@ func (g *GormManager[T]) AssociationCountContext(ctx context.Context, model *T, 
 	return g.SessionContext(ctx, opts...).Model(model).Association(column).Count()
 }
 
+// DeleteWithSelect model's primary key must be not zero
+func (g *GormManager[T]) DeleteWithSelect(model *T, opts ...Option) error {
+	return g.DeleteWithSelectContext(context.Background(), model, opts...)
+}
+
+func (g *GormManager[T]) DeleteWithSelectContext(ctx context.Context, model *T, opts ...Option) error {
+	return g.SessionContext(ctx, opts...).Delete(model).Error
+}
+
 func NewGormManager[T any](m *T, db *gorm.DB) GormManager[T] {
 	return GormManager[T]{model: m, db: db}
 }
