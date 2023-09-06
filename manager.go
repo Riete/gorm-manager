@@ -33,28 +33,28 @@ func (g *GormManager[T]) FirstContext(ctx context.Context, opts ...Option) (*T, 
 	return model, g.SessionContext(ctx, opts...).First(model).Error
 }
 
-func (g *GormManager[T]) Create(model *T) (*T, error) {
+func (g *GormManager[T]) Create(model *T) error {
 	return g.CreateContext(context.Background(), model)
 }
 
-func (g *GormManager[T]) CreateContext(ctx context.Context, model *T) (*T, error) {
-	return model, g.SessionContext(ctx).Create(model).Error
+func (g *GormManager[T]) CreateContext(ctx context.Context, model *T) error {
+	return g.SessionContext(ctx).Create(model).Error
 }
 
-func (g *GormManager[T]) BatchCreate(models ...*T) ([]*T, error) {
+func (g *GormManager[T]) BatchCreate(models ...*T) error {
 	return g.BatchCreateContext(context.Background(), models...)
 }
 
-func (g *GormManager[T]) BatchCreateContext(ctx context.Context, models ...*T) ([]*T, error) {
-	return models, g.SessionContext(ctx).Create(models).Error
+func (g *GormManager[T]) BatchCreateContext(ctx context.Context, models ...*T) error {
+	return g.SessionContext(ctx).Create(models).Error
 }
 
-func (g *GormManager[T]) FirstOrCreate(model *T, opts ...Option) (*T, error) {
+func (g *GormManager[T]) FirstOrCreate(model *T, opts ...Option) error {
 	return g.FirstOrCreateContext(context.Background(), model, opts...)
 }
 
-func (g *GormManager[T]) FirstOrCreateContext(ctx context.Context, model *T, opts ...Option) (*T, error) {
-	return model, g.SessionContext(ctx, opts...).FirstOrCreate(model).Error
+func (g *GormManager[T]) FirstOrCreateContext(ctx context.Context, model *T, opts ...Option) error {
+	return g.SessionContext(ctx, opts...).FirstOrCreate(model).Error
 }
 
 func (g *GormManager[T]) Update(column string, value any, opts ...Option) (int64, error) {
