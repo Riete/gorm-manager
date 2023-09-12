@@ -106,12 +106,12 @@ func (g *GormManager[T]) DeleteContext(ctx context.Context, opts ...Option) erro
 	return g.SessionContext(ctx, opts...).Delete(model).Error
 }
 
-func (g *GormManager[T]) Find(opts ...Option) ([]T, error) {
+func (g *GormManager[T]) Find(opts ...Option) ([]*T, error) {
 	return g.FindContext(context.Background(), opts...)
 }
 
-func (g *GormManager[T]) FindContext(ctx context.Context, opts ...Option) ([]T, error) {
-	var models []T
+func (g *GormManager[T]) FindContext(ctx context.Context, opts ...Option) ([]*T, error) {
+	var models []*T
 	return models, g.SessionContext(ctx, opts...).Find(&models).Error
 }
 
