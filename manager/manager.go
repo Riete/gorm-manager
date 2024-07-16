@@ -15,7 +15,7 @@ type Manager struct {
 
 func (g Manager) Session() *gorm.DB {
 	if g.sc == nil {
-		return g.db.WithContext(context.Background())
+		return g.db.WithContext(context.Background()).Model(g.model)
 	}
 	return g.db.Session(g.sc).Model(g.model)
 }
