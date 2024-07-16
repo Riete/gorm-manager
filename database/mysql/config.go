@@ -56,10 +56,12 @@ func NewDefaultConfig() Config {
 func NewGormMySQLConfig() gmysql.Config {
 	return gmysql.Config{
 		DSNConfig: &mysql.Config{
-			Timeout:   10 * time.Second,
-			Loc:       time.Local,
-			Params:    map[string]string{"charset": "utf8mb4"},
-			ParseTime: true,
+			Timeout:              10 * time.Second,
+			Loc:                  time.Local,
+			Params:               map[string]string{"charset": "utf8mb4"},
+			ParseTime:            true,
+			AllowNativePasswords: true,
+			CheckConnLiveness:    true,
 		},
 		DefaultStringSize: 256,
 	}
