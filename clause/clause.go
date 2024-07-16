@@ -1,94 +1,96 @@
-package manager
+package clause
 
 import (
 	"gorm.io/gorm"
 )
 
-type Option func(db *gorm.DB)
+type Clause func(db *gorm.DB)
 
-func WithConditions(query any, args ...any) Option {
+func Where(query any, args ...any) Clause {
 	return func(db *gorm.DB) {
 		db.Where(query, args...)
 	}
 }
 
-func WithNotConditions(query any, args ...any) Option {
+func Not(query any, args ...any) Clause {
 	return func(db *gorm.DB) {
 		db.Not(query, args...)
 	}
 }
 
-func WithOrConditions(query any, args ...any) Option {
+func Or(query any, args ...any) Clause {
 	return func(db *gorm.DB) {
 		db.Or(query, args...)
 	}
 }
 
-func WithSelect(query any, args ...any) Option {
+func Select(query any, args ...any) Clause {
 	return func(db *gorm.DB) {
 		db.Select(query, args...)
 	}
 }
 
-func WithOmit(column ...string) Option {
+func Omit(column ...string) Clause {
 	return func(db *gorm.DB) {
 		db.Omit(column...)
 	}
 }
 
-func WithOffset(offset int) Option {
+func Offset(offset int) Clause {
 	return func(db *gorm.DB) {
 		db.Offset(offset)
 	}
 }
 
-func WithLimit(limit int) Option {
+func Limit(limit int) Clause {
 	return func(db *gorm.DB) {
 		db.Limit(limit)
 	}
 }
 
-func WithOrder(order string) Option {
+func Order(order string) Clause {
 	return func(db *gorm.DB) {
 		db.Order(order)
 	}
 }
 
-func WithGroupByHaving(group string, having ...any) Option {
+func Group(group string) Clause {
 	return func(db *gorm.DB) {
-		if len(having) > 0 {
-			db.Group(group).Having(having[0], having[1:]...)
-		} else {
-			db.Group(group)
-		}
+		db.Group(group)
 	}
 }
 
-func WithDistinct(args ...any) Option {
+func Having(query any, args ...any) Clause {
+	return func(db *gorm.DB) {
+		db.Having(query, args...)
+	}
+}
+
+func Distinct(args ...any) Clause {
 	return func(db *gorm.DB) {
 		db.Distinct(args...)
 	}
 }
 
-func WithPreload(query string, conds ...any) Option {
+func Preload(query string, conds ...any) Clause {
 	return func(db *gorm.DB) {
 		db.Preload(query, conds...)
 	}
 }
 
-func WithAttrs(attrs ...any) Option {
+func Attrs(attrs ...any) Clause {
 	return func(db *gorm.DB) {
 		db.Attrs(attrs...)
 	}
 }
 
-func WithAssign(attrs ...any) Option {
+func Assign(attrs ...any) Clause {
 	return func(db *gorm.DB) {
 		db.Assign(attrs...)
 	}
 }
 
-func WithRawSql(sql string) Option {
+func RawSql(sql string) Clause {
 	return func(db *gorm.DB) {
 		db.Raw(sql)
 	}
