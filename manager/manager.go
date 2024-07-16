@@ -3,7 +3,7 @@ package manager
 import (
 	"context"
 
-	"github.com/riete/gorm-manager/clause"
+	"github.com/riete/gorm-manager/clauses"
 	"gorm.io/gorm"
 )
 
@@ -20,10 +20,10 @@ func (g Manager) Session() *gorm.DB {
 	return g.db.Session(g.sc).Model(g.model)
 }
 
-func (g Manager) WithClauses(clauses ...clause.Clause) *gorm.DB {
+func (g Manager) WithClauses(clauses ...clauses.Clause) *gorm.DB {
 	db := g.Session()
-	for _, c := range clauses {
-		c(db)
+	for _, clause := range clauses {
+		clause(db)
 	}
 	return db
 }
