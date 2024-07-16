@@ -1,6 +1,8 @@
 package manager
 
 import (
+	"context"
+
 	"github.com/riete/gorm-manager/clause"
 	"gorm.io/gorm"
 )
@@ -12,6 +14,9 @@ type Manager struct {
 }
 
 func (g Manager) Session() *gorm.DB {
+	if g.sc == nil {
+		return g.db.WithContext(context.Background())
+	}
 	return g.db.Session(g.sc).Model(g.model)
 }
 
@@ -23,6 +28,6 @@ func (g Manager) WithClauses(clauses ...clause.Clause) *gorm.DB {
 	return db
 }
 
-func New(db *gorm.DB, model any) *Manager {
-	return &Manager{db: db, model: model}
+func New(db *gorm.DB, model any, sc *gorm.Session) *Manager {
+	return &Manager{db: db, model: model, sc: sc}
 }
