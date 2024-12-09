@@ -18,6 +18,7 @@ type ConnectionConfig struct {
 	Username string
 	Password string
 	DBName   string
+	Options  []mysql.Option
 }
 
 type Config struct {
@@ -31,6 +32,7 @@ func (c *Config) Update(cc ConnectionConfig) {
 	c.gmc.DSNConfig.DBName = cc.DBName
 	c.gmc.DSNConfig.User = cc.Username
 	c.gmc.DSNConfig.Passwd = cc.Password
+	_ = c.gmc.DSNConfig.Apply(cc.Options...)
 }
 
 func (c *Config) GormMySQLConfig() gmysql.Config {
@@ -54,15 +56,13 @@ func NewDefaultConfig() Config {
 }
 
 func NewGormMySQLConfig() gmysql.Config {
+	c := mysql.NewConfig()
+	c.Loc = time.Local
+	c.Timeout = 10 * time.Second
+	c.Params = map[string]string{"charset": "utf8mb4"}
+	c.ParseTime = true
 	return gmysql.Config{
-		DSNConfig: &mysql.Config{
-			Timeout:              10 * time.Second,
-			Loc:                  time.Local,
-			Params:               map[string]string{"charset": "utf8mb4"},
-			ParseTime:            true,
-			AllowNativePasswords: true,
-			CheckConnLiveness:    true,
-		},
+		DSNConfig:         c,
 		DefaultStringSize: 256,
 	}
 }
